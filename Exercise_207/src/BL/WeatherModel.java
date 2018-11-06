@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collections;
 import java.util.LinkedList;
 import javax.swing.table.AbstractTableModel;
 
@@ -18,6 +19,7 @@ public class WeatherModel extends AbstractTableModel {
 
     public void add(Entry e) {
         entries.add(e);
+        Collections.sort(entries);
         fireTableRowsInserted(entries.size() - 1, entries.size() - 1);
     }
 

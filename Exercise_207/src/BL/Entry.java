@@ -2,7 +2,7 @@ package BL;
 
 import java.io.Serializable;
 
-public class Entry implements Serializable{
+public class Entry implements Serializable,Comparable{
     
     private String place;
     private int meter;
@@ -44,6 +44,12 @@ public class Entry implements Serializable{
             throw new Exception("Humidity not possible");
         }
         this.hum = hum;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Entry e = (Entry)o;
+        return this.place.compareToIgnoreCase(e.place);
     }
     
     
