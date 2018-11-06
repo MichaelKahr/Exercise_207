@@ -9,11 +9,11 @@ public class Entry implements Serializable,Comparable{
     private double temp;
     private int hum;
 
-    public Entry(String place, int meter, double temp, int hum) {
+    public Entry(String place, int meter, double temp, int hum) throws Exception{
         this.place = place;
         this.meter = meter;
-        this.temp = temp;
-        this.hum = hum;
+        setTemp(temp);
+        setHum(hum);
     }
 
     public String getPlace() {

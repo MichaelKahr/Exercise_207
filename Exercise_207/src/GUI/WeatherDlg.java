@@ -1,6 +1,9 @@
 package GUI;
 
 import BL.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -159,9 +162,13 @@ public class WeatherDlg extends javax.swing.JDialog {
     }//GEN-LAST:event_btCancelActionPerformed
 
     private void btOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOkActionPerformed
-        ok=true;
-        e = new Entry(tfPlace.getText(),Integer.parseInt(tfLevel.getText()),Double.parseDouble(tfTemp.getText()),Integer.parseInt(tfHum.getText()));
-        this.dispose();
+        try {
+            ok=true;
+            e = new Entry(tfPlace.getText(),Integer.parseInt(tfLevel.getText()),Double.parseDouble(tfTemp.getText()),Integer.parseInt(tfHum.getText()));
+            this.dispose();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }//GEN-LAST:event_btOkActionPerformed
 
     /**
