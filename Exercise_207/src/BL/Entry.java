@@ -33,10 +33,16 @@ public class Entry implements Serializable{
     }
 
     public void setTemp(double temp) throws Exception{
+        if(temp<-35||temp>45){
+            throw new Exception("Temperature not possible");
+        }
         this.temp = temp;
     }
 
     public void setHum(int hum) throws Exception{
+        if(hum<0||hum>100){
+            throw new Exception("Humidity not possible");
+        }
         this.hum = hum;
     }
     

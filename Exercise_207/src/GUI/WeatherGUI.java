@@ -2,6 +2,10 @@ package GUI;
 
 import BL.WeatherModel;
 import BL.WeatherRenderer;
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -11,15 +15,17 @@ import BL.WeatherRenderer;
 public class WeatherGUI extends javax.swing.JFrame {
 
     public static WeatherModel model = new WeatherModel();
+    private File loc = new File("data.ser");
     
     /**
      * Creates new form WeatherGUI
      */
-    public WeatherGUI() {
+    public WeatherGUI() throws Exception {
         initComponents();
         jtOut.setModel(model);
         jtOut.setDefaultRenderer(Object.class, new WeatherRenderer());
         jtOut.setShowGrid(true);
+        model.load(loc);
     }
 
     /**
@@ -52,6 +58,11 @@ public class WeatherGUI extends javax.swing.JFrame {
         jPopupMenu1.add(jmSeaLevel);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jtOut.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -139,16 +150,42 @@ public class WeatherGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jmDelActionPerformed
 
     private void jmSetTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmSetTActionPerformed
-        // TODO add your handling code here:
+        if(jtOut.getSelectedRow()==-1){
+            JOptionPane.showMessageDialog(null, "Please select something first");
+        }else{
+            try {
+                String res = JOptionPane.showInputDialog(this,"Set the new temperature!");
+                model.sTemp(jtOut.getSelectedRow(), Double.parseDouble(res));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_jmSetTActionPerformed
 
     private void jmSetHJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmSetHJActionPerformed
-        // TODO add your handling code here:
+        if(jtOut.getSelectedRow()==-1){
+            JOptionPane.showMessageDialog(null, "Please select something first");
+        }else{
+            try {
+                String res = JOptionPane.showInputDialog(this,"Set the new Humidity!");
+                model.sHum(jtOut.getSelectedRow(), Integer.parseInt(res));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_jmSetHJActionPerformed
 
     private void jmSeaLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmSeaLevelActionPerformed
         model.changeCol();
     }//GEN-LAST:event_jmSeaLevelActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            model.safe(loc);
+        } catch (Exception ex) {
+            Logger.getLogger(WeatherGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -180,7 +217,11 @@ public class WeatherGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new WeatherGUI().setVisible(true);
+                try {
+                    new WeatherGUI().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(WeatherGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
